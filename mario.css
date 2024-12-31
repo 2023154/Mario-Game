@@ -1,0 +1,142 @@
+body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.gameFrame {
+    width: 80%;
+    height: 550px;
+    border: 2px solid black;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+    background-image: 
+        url("https://github.com/Kageetai/mario-background-parallax/blob/master/img/ground.png?raw=true"),
+        url("https://github.com/Kageetai/mario-background-parallax/blob/master/img/bushes.png?raw=true"),
+        url("https://raw.githubusercontent.com/Kageetai/mario-background-parallax/master/img/back.png?raw=true");
+    background-color: #f8e0b0;
+    background-size: 100% 50px, 100% auto, cover;
+    background-repeat: no-repeat, repeat-x, repeat-x;
+    background-position: left bottom, left bottom, left bottom;
+    animation: back 15s infinite linear;
+}
+
+.pipe {
+    position: absolute;
+    bottom: 50px;
+    width: 80px;
+    animation: pipe-animation 3s infinite linear;
+}
+
+.bird {
+    position: absolute;
+    bottom: 200px;
+    width: 100px;
+    animation: bird-animation 4.5s infinite linear;
+}
+
+.marioImg {
+    width: 150px;
+    bottom: 50px;
+    position: absolute;
+}
+
+.jumpAnimation {
+    animation: jumpAnimation 600ms ease-out;
+}
+
+.doubleJump {
+    animation: doubleJump 2000ms ease-out;
+}
+
+.score {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 24px;
+    font-family: Arial, sans-serif;
+    color: black;
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+
+@keyframes pipe-animation {
+    from {
+        right: -80px;
+    }
+    to {
+        right: 100%;
+    }
+}
+
+@keyframes jumpAnimation {
+    0% {
+        bottom: 0px;
+    }
+    30% {
+        bottom: 280px;
+    }
+    40% {
+        bottom: 280px;
+    }
+    50% {
+        bottom: 260px;
+    }
+    60% {
+        bottom: 230px;
+    }
+    100% {
+        bottom: 50px;
+    }
+}
+
+@keyframes doubleJump {
+    0% {
+        bottom: 210px;
+    }
+    30% {
+        bottom: 400px;
+    }
+    40% {
+        bottom: 310px;
+    }
+    50% {
+        bottom: 220px;
+    }
+    60% {
+        bottom: 50px;
+    }
+    100% {
+        bottom: 50px;
+    }
+}
+
+@keyframes bird-animation {
+    from {
+        right: -100px;
+    }
+    to {
+        right: 100%;
+    }
+}
+
+@keyframes back {
+    0% {
+        background-position: left bottom, left 0 bottom, left 0 bottom;
+    }
+    50% {
+        background-position: left 50% bottom, left -500px bottom, left -200px bottom;
+    }
+    100% {
+        background-position: left bottom, left -1000px bottom, left -400px bottom;
+    }
+}
