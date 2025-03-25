@@ -2,6 +2,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const mario = document.querySelector('.marioImg');
     const pipe = document.querySelector('.pipe');
     const scoreDisplay = document.querySelector('.score');
+    const restartBtn = document.querySelector('.restart-btn');
+
+
     let score = 0;
     let gameOver = false;
     let isJumping = false;
@@ -79,6 +82,8 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const endGame = () => {
+        restartBtn.style.display = 'block';
+
         if (gameOver) return;
         gameOver = true;
 
@@ -101,8 +106,15 @@ document.addEventListener('DOMContentLoaded', () => {
         mario.style.width = '100px';
         mario.style.left = '30px';
 
+
+
         clearInterval(gameLoop);
     };
+
+    restartBtn.addEventListener('click', () => {
+        location.reload(); // Quick restart
+    });
+
 
     const gameLoop = setInterval(() => {
         const pipePosition = pipe.offsetLeft;

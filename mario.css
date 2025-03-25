@@ -62,16 +62,32 @@ body {
 /*    animation-timing-function: cubic-bezier(0.28, 0.84, 0.42, 1);*/
 /*}*/
 
+.restart-btn {
+    position: absolute;
+    top: 50px;
+    right: 10px;
+    font-size: 1.2rem;
+    padding: 8px 16px;
+    background-color: #ffcc00;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+.restart-btn:hover {
+    background-color: #e6b800;
+}
 
 
 .score {
     position: absolute;
-    top: 10px;
+    top: 50px;
     left: 10px;
     font-size: 24px;
     font-family: Arial, sans-serif;
     color: black;
-    background-color: rgba(255, 255, 255, 0.7);
+    background-color: #ffcc00;
     padding: 5px 10px;
     border-radius: 5px;
 }
