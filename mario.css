@@ -17,7 +17,7 @@ body {
     margin: 0 auto;
     position: relative;
     overflow: hidden;
-    background-image: 
+    background-image:
         url("https://github.com/Kageetai/mario-background-parallax/blob/master/img/ground.png?raw=true"),
         url("https://github.com/Kageetai/mario-background-parallax/blob/master/img/bushes.png?raw=true"),
         url("https://raw.githubusercontent.com/Kageetai/mario-background-parallax/master/img/back.png?raw=true");
@@ -43,18 +43,26 @@ body {
 }
 
 .marioImg {
-    width: 150px;
-    bottom: 50px;
     position: absolute;
+    bottom: 50px;
+    left: 50px;
+    width: 100px;
+    transition: transform 0.1s ease;
 }
 
-.jumpAnimation {
-    animation: jumpAnimation 600ms ease-out;
-}
 
-.doubleJump {
-    animation: doubleJump 2000ms ease-out;
-}
+
+/*.jumpAnimation {*/
+/*    animation: jumpAnimation 700ms ease-out;*/
+/*    animation-timing-function: cubic-bezier(0.28, 0.84, 0.42, 1);*/
+/*}*/
+
+/*.doubleJump {*/
+/*    animation: doubleJump 900ms ease-out;*/
+/*    animation-timing-function: cubic-bezier(0.28, 0.84, 0.42, 1);*/
+/*}*/
+
+
 
 .score {
     position: absolute;
@@ -77,57 +85,29 @@ body {
         right: 100%;
     }
 }
+/*@keyframes jumpAnimation {*/
+/*    0% { bottom: 50px; }*/
+/*    40% { bottom: 250px; }  !* Rise *!*/
+/*    60% { bottom: 250px; }  !* Hang time *!*/
+/*    100% { bottom: 50px; }  !* Fall *!*/
+/*}*/
 
-@keyframes jumpAnimation {
-    0% {
-        bottom: 0px;
-    }
-    30% {
-        bottom: 280px;
-    }
-    40% {
-        bottom: 280px;
-    }
-    50% {
-        bottom: 260px;
-    }
-    60% {
-        bottom: 230px;
-    }
-    100% {
-        bottom: 50px;
-    }
-}
+/*@keyframes doubleJump {*/
+/*    0% { bottom: 150px; }*/
+/*    40% { bottom: 350px; }*/
+/*    60% { bottom: 350px; }*/
+/*    100% { bottom: 50px; }*/
+/*}*/
 
-@keyframes doubleJump {
-    0% {
-        bottom: 210px;
-    }
-    30% {
-        bottom: 400px;
-    }
-    40% {
-        bottom: 310px;
-    }
-    50% {
-        bottom: 220px;
-    }
-    60% {
-        bottom: 50px;
-    }
-    100% {
-        bottom: 50px;
-    }
-}
 
-@keyframes bird-animation {
-    from {
-        right: -100px;
-    }
-    to {
-        right: 100%;
-    }
-}
+/*@keyframes bird-animation {*/
+/*    from {*/
+/*        right: -100px;*/
+/*    }*/
+/*    to {*/
+/*        right: 100%;*/
+/*    }*/
+/*}*/
 
 @keyframes back {
     0% {

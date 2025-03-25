@@ -1,111 +1,131 @@
 document.addEventListener('DOMContentLoaded', () => {
     const mario = document.querySelector('.marioImg');
     const pipe = document.querySelector('.pipe');
-    const bird = document.querySelector('.bird');
     const scoreDisplay = document.querySelector('.score');
     let score = 0;
+    let gameOver = false;
+    let isJumping = false;
+    let velocity = 0;
+    let gravity = -0.8;
+    let position = 50;
+    let isGrounded = true;
+    let pipePassed = false;
+    let pipeSpeed = 3000;
+    let isHoldingJump = false;
 
-    let isJumping = false; // To track if Mario is already in the air
-    let doubleJumped = false; // To track if a double jump has occurred
+    let animationFrame;
+    const updateMarioPhysics = () => {
+        // 🪂 gravidade reduzida enquanto segura espaço
+        const effectiveGravity = (!isGrounded && isHoldingJump) ? -0.6 : -1.0;
 
-    let pipePassed = false; // Flag to detect when pipe resets
+        velocity += effectiveGravity;
+        position += velocity;
 
-    const performSingleJump = () => {
-        console.log("Jump triggered");
-        isJumping = true;
-        mario.classList.add('jumpAnimation');
-        setTimeout(() => {
-            mario.classList.remove('jumpAnimation');
+        if (position <= 50) {
+            position = 50;
+            velocity = 0;
             isJumping = false;
-            doubleJumped = false;
-        }, 600);
+            isGrounded = true;
+
+            // Squish no chão
+            mario.style.transform = 'scaleY(0.85)';
+            setTimeout(() => {
+                mario.style.transform = 'scaleY(1)';
+            }, 100);
+        }
+
+        mario.style.bottom = `${position}px`;
+
+        if (!isGrounded) {
+            mario.style.transform = `rotate(${velocity * -2}deg)`;
+        }
+
+        animationFrame = requestAnimationFrame(updateMarioPhysics);
     };
-    
-    const performDoubleJump = () => {
-        console.log("Double jump triggered");
-        isJumping = true;
-        doubleJumped = true;
-        mario.classList.add('doubleJump');
-        setTimeout(() => {
-            mario.classList.remove('doubleJump');
-        }, 2000);
-    };
-    
+
+
     const jump = (event) => {
-        if (event.code === 'Space') {
-            if (!isJumping) {
-                performSingleJump();
-            } else if (!doubleJumped) {
-                performDoubleJump();
+        if (event.code === 'Space' && !gameOver) {
+            if (isGrounded) {
+                velocity = 2;// Jump strength
+                isJumping = true;
+                isGrounded = false;
             }
         }
     };
 
-    // Attach jump to the spacebar key
-    document.addEventListener('keydown', jump);
+    document.addEventListener('keydown', (event) => {
+        if (event.code === 'Space' && !gameOver) {
+            isHoldingJump = true;
 
-    const loop = setInterval(() => {
+            if (isGrounded) {
+                velocity = 20; // força do pulo
+                isJumping = true;
+                isGrounded = false;
+            }
+        }
+    });
+
+    document.addEventListener('keyup', (event) => {
+        if (event.code === 'Space') {
+            isHoldingJump = false;
+        }
+    });
+
+    const updatePipeSpeed = () => {
+        pipe.style.animation = 'none';
+        void pipe.offsetWidth;
+        pipe.style.animation = `pipe-animation ${pipeSpeed / 1000}s infinite linear`;
+    };
+
+    const endGame = () => {
+        if (gameOver) return;
+        gameOver = true;
+
+        cancelAnimationFrame(animationFrame);
+
+        // Lock Mario
+        const marioBottom = getComputedStyle(mario).bottom;
+        mario.style.animation = 'none';
+        mario.style.bottom = marioBottom;
+
+        // Lock Pipe
+        const pipeRect = pipe.getBoundingClientRect();
+        const frameRect = pipe.parentElement.getBoundingClientRect();
+        const pipeLeft = pipeRect.left - frameRect.left;
+
+        pipe.style.animation = 'none';
+        pipe.style.left = `${pipeLeft}px`;
+
+        mario.src = 'mariodying.png';
+        mario.style.width = '100px';
+        mario.style.left = '30px';
+
+        clearInterval(gameLoop);
+    };
+
+    const gameLoop = setInterval(() => {
         const pipePosition = pipe.offsetLeft;
-        const marioPosition = +window.getComputedStyle(mario).bottom.replace('px', '');
-        const birdPosition = bird.offsetLeft;
-        const birdBottom = parseInt(window.getComputedStyle(bird).bottom.replace('px', ''));
+        const marioBottom = parseFloat(getComputedStyle(mario).bottom);
 
-        const marioHeight = 150; // Approx height of Mario
-        const birdHeight = 100; // Approx height of the bird
-
-        const marioTop = marioPosition + marioHeight;
-        const birdTop = birdBottom + birdHeight;
-
-        // Collision with pipe
-        if (pipePosition <= 120 && marioPosition < 80 && pipePosition > 0) {
-            // Game over logic for pipe collision
-            pipe.style.animation = 'none';
-            pipe.style.left = `${pipePosition}px`;
-
-            bird.style.animation = 'none';
-            bird.style.left = `${birdPosition}px`;
-
-            mario.style.animation = 'none';
-            mario.style.bottom = `${marioPosition}px`;
-            // mario.style.bottom = `${marioPosition}px`;
-
-            mario.src = 'mariodying.png';
-            mario.style.width = '100px';
-            mario.style.left = '30px';
-
-            clearInterval(loop);
+        if (pipePosition <= 120 && pipePosition > 0 && marioBottom < 80) {
+            endGame();
         }
 
-        // Collision with bird
-        if (
-            birdPosition <= 120 && birdPosition > 0 && // Horizontal collision
-            marioTop > birdBottom && marioPosition < birdTop // Vertical collision
-        ) {
-            // Game over logic for bird collision
-            bird.style.animation = 'none';
-            bird.style.left = `${birdPosition}px`;
-            pipe.style.left = `${pipePosition}px`;
+        if (pipePosition <= 50 && !pipePassed) {
+            score++;
+            scoreDisplay.textContent = `Score: ${score}`;
 
-            pipe.style.animation = 'none';
-
-            mario.src = 'mariodying.png';
-            mario.style.width = '100px';
-            mario.style.left = '30px';
-
-            clearInterval(loop); // Stop the game loop
+            pipeSpeed = Math.max(800, pipeSpeed - 200);
+            updatePipeSpeed();
+            pipePassed = true;
         }
 
-        // Scoring logic
-        if (pipePosition <= 0 && !pipePassed) {
-            score++; // Increment the score
-            scoreDisplay.textContent = `Score: ${score}`; // Update the score display
-            pipePassed = true; // Ensure the score increments only once per reset
-        }
-
-        // Reset the flag when the pipe comes back on screen
-        if (pipePosition > 0) {
+        if (pipePosition > 400) {
             pipePassed = false;
         }
     }, 10);
-    console.log()
+
+    updatePipeSpeed();
+    updateMarioPhysics(); // Start physics loop
 });
