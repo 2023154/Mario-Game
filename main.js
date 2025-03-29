@@ -5,12 +5,13 @@ function createWindow() {
     const win = new BrowserWindow({
         width: 800,
         height: 600,
+        icon: path.join(__dirname, '../gamePictures/mario_1024.icns'),
         webPreferences: {
             nodeIntegration: true
         }
     });
 
-    win.loadFile('JogoDoMario/mario.html');
+    win.loadFile(path.join(__dirname, 'mario.html'));
 }
 
 app.whenReady().then(() => {
