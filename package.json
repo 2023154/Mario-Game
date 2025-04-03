@@ -1,0 +1,33 @@
+{
+  "name": "mariogame",
+  "version": "1.0.0",
+  "main": "JogoDoMario/main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win"
+  },
+  "build": {
+    "appId": "com.mario.game",
+    "productName": "Mario Game",
+    "win": {
+      "target": "nsis",
+      "icon": "gamePictures/marioicon.ico"
+    },
+    "nsis": {
+      "include": "build/installer.nsi",
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    },
+    "files": [
+      "**/*",
+      "!node_modules",
+      "!dist"
+    ]
+  },
+  "devDependencies": {
+    "electron": "^35.0.3",
+    "electron-builder": "^25.1.8"
+  }
+}
