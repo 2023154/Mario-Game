@@ -1,0 +1,26 @@
+# 🔧 Node modules
+node_modules/
+
+# 🔨 Electron build output
+dist/
+out/
+
+# 🧪 Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 🧠 IDE/Editor folders
+.idea/
+.vscode/
+
+# 🧼 System files
+.DS_Store
+Thumbs.db
+
+# ⚙️ OS-generated files
+*.swp
+*.swo
+
+# Ignore env files if used
+.env
