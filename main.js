@@ -11,7 +11,7 @@ function createWindow() {
         }
     });
 
-    win.loadFile(path.join(__dirname, 'mario.html'));
+    win.loadFile(path.join(__dirname, 'index.html'));
 }
 
 app.whenReady().then(() => {
